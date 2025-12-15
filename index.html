@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gạch Men Tân Đại Huy - Gạch Ốp Lát Giá Rẻ</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #ff6600;
+            --zalo-color: #0068ff;
+            --dark-blue: #0a2647;
+        }
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #333;
+        }
+        
+        /* Utility Classes */
+        .text-primary { color: var(--primary-color) !important; }
+        .bg-primary { background-color: var(--primary-color) !important; }
+        .bg-zalo { background-color: var(--zalo-color) !important; }
+        .text-secondary-custom { color: var(--secondary-color) !important; }
+        .bg-secondary-custom { background-color: var(--secondary-color) !important; }
+        
+        .hover-shadow:hover { 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        .cursor-pointer { cursor: pointer; }
+
+        /* Navbar */
+        .navbar { box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .nav-link { font-weight: 500; color: #4b5563; }
+        .nav-link:hover { color: var(--primary-color); }
+        
+        /* Dropdown Desktop */
+        @media (min-width: 992px) {
+            .dropdown:hover > .dropdown-menu {
+                display: block;
+                animation: fadeInUp 0.2s ease;
+            }
+            .dropdown-menu { margin-top: 0; border-top: 3px solid var(--primary-color); }
+
+            /* Fix: Show Submenu on Hover */
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Submenu */
+        .dropdown-submenu { position: relative; }
+        .dropdown-submenu .dropdown-menu {
+            top: 0; left: 100%; margin-top: -1px;
+        }
+
+        /* Product Card */
+        .product-img-container {
+            height: 220px;
+            overflow: hidden;
+            background-color: #f1f1f1;
+            position: relative;
+        }
+        .product-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .product-card:hover .product-img { transform: scale(1.1); }
+        
+        /* Sidebar Category */
+        .category-item {
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        .category-item:hover { background-color: #e9ecef; color: var(--primary-color); }
+        .category-item.active { color: var(--primary-color); font-weight: 700; background-color: #e7f1ff; }
+
+        /* Footer */
+        footer a:hover { color: var(--secondary-color) !important; }
+
+        /* Pagination Style */
+        .page-link { color: #333; border: 1px solid #dee2e6; margin: 0 3px; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: 500; }
+        .page-link:hover { background-color: #e9ecef; color: var(--primary-color); border-color: var(--primary-color); }
+        .page-item.active .page-link { background-color: var(--primary-color); border-color: var(--primary-color); color: white; }
+        .page-item.disabled .page-link { color: #ccc; pointer-events: none; background-color: #f8f9fa; }
+        .page-dots { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; color: #999; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.561.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- DỮ LIỆU ---
+
+        const COMPANY_INFO = {
+            name: "Gạch Men Tân Đại Huy",
+            hotline: "0918.214.353",
+            email: "Congtythuandaihuy@gmail.com",
+            address: "1275 tổ 2 khu phố 7a, phường Long Bình, Đồng Nai",
+            zaloLink: "https://zalo.me/0918214353"
+        };
+
+        const CATEGORIES = [
+            { id: 1, name: "Gạch Lát Nền", icon: "bi-layers", colorClass: "text-primary" },
+            { id: 2, name: "Gạch Ốp Tường", icon: "bi-grid", colorClass: "text-success" },
+            { id: 3, name: "Thiết Bị Vệ Sinh", icon: "bi-water", colorClass: "text-warning" },
+            { id: 4, name: "Phụ Kiện Nhà Bếp", icon: "bi-basket", colorClass: "text-danger" }
+        ];
+
+        const NAV_ITEMS = [
+            { label: "Trang chủ", href: "#" },
+            { 
+                label: "Gạch Ốp", 
+                href: "#",
+                children: [
+                    { 
+                        label: "Gạch Nhập Khẩu", 
+                        href: "#", 
+                        children: [
+                            { label: "Gạch 80x80", href: "#" },
+                            { label: "Gạch 60x1200", href: "#" }, 
+                            { label: "Gạch 1200x1200", href: "#" }
+                        ]
+                    },
+                    { 
+                        label: "Gạch Việt Nam", 
+                        href: "#",
+                        children: [
+                            { label: "Gạch 30x60", href: "#" },
+                            { label: "Gạch 40x80", href: "#" },
+                            { label: "Gạch 80x80 VN", href: "#" }
+                        ]
+                    }
+                ]
+            },
+            { 
+                label: "Gạch Nền", 
+                href: "#",
+                children: [
+                    { label: "Nền Nhà 60x60", href: "#" },
+                    { label: "Nền Nhà Vệ Sinh 30x30", href: "#" }
+                ]
+            },
+            { 
+                label: "Gạch Sân Vườn", 
+                href: "#",
+                children: [
+                    { label: "Gạch 50x50", href: "#" },
+                    { label: "Gạch 40x60", href: "#" }
+                ]
+            },
+            { label: "Thiết Bị Vệ Sinh", href: "#" },
+            { 
+                label: "Khác", 
+                href: "#",
+                children: [
+                    { label: "Sơn Nước", href: "#" },
+                    { label: "Chống Thấm", href: "#" },
+                    { label: "Keo Dán Gạch", href: "#" }
+                ]
+            }
+        ];
+
+        const BANNER_IMAGES = [
+            "/img/banner1.jpg",
+            "/img/banner2.jpg",
+            "/img/banner3.jpg"
+        ];
+
+        // --- DANH SÁCH SẢN PHẨM ---
+        // LƯU Ý: Ảnh phải được lưu trong thư mục "img" cùng cấp với file index.html
+        // Tên file ảnh nên đặt theo mã sản phẩm (ví dụ: PL33414.jpg)
+
+        const PRODUCTS = [
+            // ==========================================
+            // 1. NHÓM GẠCH NHẬP KHẨU
+            // ==========================================
+            // --- GẠCH 80x80 ---
+            { 
+                id: 131, 
+                name: "Gạch 80x80 GAM88003 - Bề Mặt Matt (Xám Xi Măng)", 
+                image: "/img/GAM88003.jpg", 
+                category: "Gạch 80x80", 
+                isNew: true 
+            },
+            { 
+                id: 132, 
+                name: "Gạch 80x80 GAP88018 - Bóng Kiếng Vân Đá Xám", 
+                image: "/img/GAM88018.jpg", 
+                category: "Gạch 80x80", 
+                isNew: true 
+            },
+            { 
+                id: 133, 
+                name: "Gạch 80x80 GAP88040 - Bóng Kiếng Trắng Vân Mây", 
+                image: "/img/GAM88040.jpg", 
+                category: "Gạch 80x80", 
+                isNew: true 
+            },
+            { 
+                id: 134, 
+                name: "Gạch 80x80 GAP88036 - Bóng Kiếng Xám Nhạt", 
+                image: "/img/GAP88036.jpg", 
+                category: "Gạch 80x80", 
+                isNew: true 
+            },
+            { 
+                id: 135, 
+                name: "Gạch 80x80 GAM88002 - Bề Mặt Matt (Kem Vàng)", 
+                image: "/img/GAM88002.jpg", 
+                category: "Gạch 80x80", 
+                isNew: true 
+            },
+            { 
+                id: 136, 
+                name: "Gạch 80x80 GAP88038 - Bóng Kiếng Xám Vân Đá", 
+                image: "/img/GAP88038.jpg", 
+                category: "Gạch 80x80", 
+                isNew: true 
+            },
+            { 
+                id: 137, 
+                name: "Gạch 80x80 GAP88004 - Bóng Kiếng Xám Đậm", 
+                image: "/img/GAP88004.jpg", 
+                category: "Gạch 80x80", 
+                isNew: true 
+            },
+            { 
+                id: 138, 
+                name: "Gạch 80x80 GAP88005 - Bóng Kiếng Xám Khói", 
+                image: "/img/GAP88005.jpg", 
+                category: "Gạch 80x80", 
+                isNew: true 
+            },
+            
+            // --- GẠCH 60x1200 ---
+            { 
+                id: 141, 
+                name: "Viglacera ASD 61251GP - Bóng Kiếng Trắng Vân", 
+                image: "/img/ASD61251.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 142, 
+                name: "Viglacera ASD 61255GP - Bóng Kiếng Kem Vân Đá", 
+                image: "/img/ASD61255.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 143, 
+                name: "Viglacera ASD 61254GP - Bóng Kiếng Xám Vân Đá", 
+                image: "/img/ASD61254.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 144, 
+                name: "Viglacera ASD 61253GP - Bóng Kiếng Trắng Khói", 
+                image: "/img/ASD61253.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 145, 
+                name: "Viglacera ASD 61256GM - Đá Mờ Xám Nhạt", 
+                image: "/img/ASD61256.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 146, 
+                name: "Viglacera ASD 61252GP - Bóng Kiếng Xám Xanh", 
+                image: "/img/ASD61252.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 147, 
+                name: "Viglacera ASD 61257GM - Đá Mờ Xám", 
+                image: "/img/ASD61257.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 148, 
+                name: "Gạch Ấn Độ 60x120 GAM62057 - Đá Mờ Kem Vân", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 149, 
+                name: "Gạch Ấn Độ 60x120 GAM62031 - Đá Mờ Trắng Vân", 
+                image: "/img/GAM62031.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 150, 
+                name: "Gạch Ấn Độ 60x120 GAM62060 - Đá Mờ Xám Vân", 
+                image: "/img/GAM62060.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+            { 
+                id: 151, 
+                name: "Gạch Ấn Độ 60x120 GAM62037 - Đá Mờ Vàng Kem", 
+                image: "/img/GAM62037.jpg", 
+                category: "Gạch 60x1200", 
+                isNew: true 
+            },
+
+            // --- GẠCH 1200x1200 ---
+            { 
+                id: 121, 
+                name: "Gạch Ấn Độ 1200x1200 GAP1212012 - Trắng Vân Mây", 
+                image: "/img/GAP1212012.jpg", 
+                category: "Gạch 1200x1200", 
+                isNew: true 
+            },
+            { 
+                id: 122, 
+                name: "Gạch Ấn Độ 1200x1200 GAP1212004 - Vàng Kem Vân Đá", 
+                image: "/img/GAP1212004.jpg", 
+                category: "Gạch 1200x1200", 
+                isNew: true 
+            },
+            { 
+                id: 123, 
+                name: "Gạch Ấn Độ 1200x1200 GAP1212015 - Xám Vân Đá", 
+                image: "/img/GAP1212015.jpg", 
+                category: "Gạch 1200x1200", 
+                isNew: true 
+            },
+
+            // ==========================================
+            // 2. NHÓM GẠCH VIỆT NAM
+            // ==========================================
+            // --- GẠCH 30x60 ---
+            { 
+                id: 231, 
+                name: "Gạch 30x60 GHC3606 - Men Bóng (Bộ Đậm Nhạt)", 
+                image: "/img/GHC3606.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+            { 
+                id: 232, 
+                name: "Gạch 30x60 Platinum PL3601 - Men Mờ (Xám Lục Giác)", 
+                image: "/img/PL3601.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+            { 
+                id: 233, 
+                name: "Gạch 30x60 Platinum PL3602 - Men Mờ (Xám Ghi)", 
+                image: "/img/PL3602.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+            { 
+                id: 234, 
+                name: "Gạch 30x60 Platinum PL3603 - Men Mờ (Kem Vàng)", 
+                image: "/img/PL3603.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+            { 
+                id: 235, 
+                name: "Gạch 30x60 GHC3604 - Men Bóng (Xám Vân Đá)", 
+                image: "/img/GHC3604.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+            { 
+                id: 236, 
+                name: "Gạch 30x60 GHCM3603 - Men Mờ (Họa Tiết Hình Học)", 
+                image: "/img/GHCM3603.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+            { 
+                id: 237, 
+                name: "Gạch 30x60 Platinum PT36004 - Men Bóng (Xám Vân Mây)", 
+                image: "/img/PT36004.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+            { 
+                id: 238, 
+                name: "Gạch 30x60 Platinum PT36001 - Men Bóng (Trắng Vân Hoa)", 
+                image: "/img/PT36001.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+            { 
+                id: 239, 
+                name: "Gạch 30x60 Platinum PT36002 - Men Bóng (Trắng Bình Hoa)", 
+                image: "/img/PT36002.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+            { 
+                id: 240, 
+                name: "Gạch 30x60 Platinum PT36003 - Men Bóng (Trắng Họa Tiết)", 
+                image: "/img/PT36003.jpg", 
+                category: "Gạch 30x60", 
+                isNew: true 
+            },
+
+            // --- GẠCH 40x80 ---
+            { 
+                id: 251, 
+                name: "Gạch 40x80 Italake ITL 4804 - Bộ Xám Đậm Nhạt", 
+                image: "/img/ITL4804.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            { 
+                id: 252, 
+                name: "Gạch 40x80 Italake ITL 4801 - Bộ Trắng Vân Hoa", 
+                image: "/img/ITL4801.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            { 
+                id: 253, 
+                name: "Gạch 40x80 World Tiles GWT.40101 - Bộ Trắng Điểm Vàng", 
+                image: "/img/GWT40101.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            { 
+                id: 254, 
+                name: "Gạch 40x80 World Tiles GWT.40102 - Bộ Trắng Xám", 
+                image: "/img/GWT40102.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            { 
+                id: 255, 
+                name: "Gạch 40x80 Italake ITL 4802 - Bộ Xám Vân Đá", 
+                image: "/img/ITL4802.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            { 
+                id: 256, 
+                name: "Gạch 40x80 TP48014 - Bộ Kem Vàng Geometric", 
+                image: "/img/TP48014.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            { 
+                id: 257, 
+                name: "Gạch 40x80 TP48012 - Bộ Xám Sọc", 
+                image: "/img/TP48012.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            { 
+                id: 258, 
+                name: "Gạch 40x80 TPV48000B - Bộ Hoa Xanh Dương", 
+                image: "/img/TPV48000.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            { 
+                id: 259, 
+                name: "Gạch 40x80 TP48010 - Bộ Xám Hình Học", 
+                image: "/img/TP48010.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            { 
+                id: 260, 
+                name: "Gạch 40x80 TP48008 - Bộ Xám Lá Cây", 
+                image: "/img/TP48008.jpg", 
+                category: "Gạch 40x80", 
+                isNew: true 
+            },
+            
+            // --- GẠCH 80x80 VN ---
+            { 
+                id: 221, 
+                name: "Gạch 80x80 HD8805 - Bóng Kiếng Vân Đá Xám", 
+                image: "/img/HD8805.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 222, 
+                name: "Gạch 80x80 HD8801 - Bóng Kiếng Vân Mây", 
+                image: "/img/HD8801.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 223, 
+                name: "Gạch 80x80 ECO 8802 - Bóng Kiếng Xám Đá", 
+                image: "/img/ECO8802.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 224, 
+                name: "Gạch 80x80 HD8803 - Bóng Kiếng Xám Khói", 
+                image: "/img/HD8803.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 225, 
+                name: "Gạch 80x80 TP8006 - Bóng Kiếng Xám Vân", 
+                image: "/img/TP8006.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 226, 
+                name: "Gạch 80x80 TP8019 - Bóng Kiếng Trắng Vân", 
+                image: "/img/TP8019.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 227, 
+                name: "Gạch 80x80 VP8005 - Bóng Kiếng Kem", 
+                image: "/img/VP8005.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 228, 
+                name: "Gạch 80x80 VP8501M - Đá Mờ Kem Vàng", 
+                image: "/img/VP8501.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 229, 
+                name: "Gạch 80x80 VP8502M - Đá Mờ Xám Nhạt", 
+                image: "/img/VP8502.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 230, 
+                name: "Gạch 80x80 VP8503M - Đá Mờ Xám Đậm", 
+                image: "/img/VP8503.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+            { 
+                id: 241, 
+                name: "Gạch 80x80 VP8505M - Đá Mờ Kem Nhạt", 
+                image: "/img/VP8505.jpg", 
+                category: "Gạch 80x80 VN", 
+                isNew: true 
+            },
+
+            // ==========================================
+            // 3. NHÓM GẠCH NỀN NHÀ
+            // ==========================================
+            { 
+                id: 302, 
+                name: "Gạch 60x60 TP6000 - Siêu Bóng Kính Trắng", 
+                image: "/img/TP6000.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 303, 
+                name: "Gạch 60x60 TP6002 - Siêu Bóng Kính Đen", 
+                image: "/img/TP6002.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 304, 
+                name: "Gạch 60x60 TP6003 - Siêu Bóng Kính Đỏ", 
+                image: "/img/TP6003.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 305, 
+                name: "Gạch 60x60 TP6005 - Vân Đá Trắng", 
+                image: "/img/TP6005.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 306, 
+                name: "Gạch 60x60 TP6006 - Vân Đá Xám", 
+                image: "/img/TP6006.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 307, 
+                name: "Gạch 60x60 TP6011 - Vân Đá Xám Nhạt", 
+                image: "/img/TP6011.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 308, 
+                name: "Gạch 60x60 TP6015 - Vân Mây Trắng", 
+                image: "/img/TP6015.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 309, 
+                name: "Gạch 60x60 TP6018 - Vân Đá Xanh Ngọc", 
+                image: "/img/TP6018.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 312, 
+                name: "Gạch 60x60 TP6019 - Vân Đá Xám Ghi", 
+                image: "/img/TP6019.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 313, 
+                name: "Gạch 60x60 TP6020 - Vân Đá Trắng Khói", 
+                image: "/img/TP6020.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 314, 
+                name: "Gạch 60x60 14.600600.61101 - Giả Gỗ", 
+                image: "/img/61101.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 315, 
+                name: "Gạch 60x60 14.600600.61103 - Vân Đá Trắng Mờ", 
+                image: "/img/61103.jpg", 
+                category: "Nền Nhà 60x60", 
+                isNew: true 
+            },
+            { 
+                id: 310, 
+                name: "Gạch Toilet 30x30 Chống Trơn Giả Sỏi", 
+                image: "/img/toilet3030.jpg", 
+                category: "Nền Nhà Vệ Sinh 30x30", 
+                isNew: false 
+            },
+            {
+                id: 321,
+                name: "Gạch 30x30 Platinum PL33414 - Men Mờ Xám",
+                image: "/img/PL33414.jpg",
+                category: "Nền Nhà Vệ Sinh 30x30",
+                isNew: true
+            },
+            {
+                id: 322,
+                name: "Gạch 30x30 Platinum PL33413 - Men Mờ Xám Đậm",
+                image: "/img/PL33413.jpg",
+                category: "Nền Nhà Vệ Sinh 30x30",
+                isNew: true
+            },
+            {
+                id: 323,
+                name: "Gạch 30x30 Platinum PL33412 - Men Mờ Xám Ghi",
+                image: "/img/PL33412.jpg",
+                category: "Nền Nhà Vệ Sinh 30x30",
+                isNew: true
+            },
+            {
+                id: 324,
+                name: "Gạch 30x30 Platinum PL33804 - Hoa Văn Hình Học",
+                image: "/img/PL33804.jpg",
+                category: "Nền Nhà Vệ Sinh 30x30",
+                isNew: true
+            },
+            {
+                id: 325,
+                name: "Gạch 30x30 Platinum PL33411 - Men Mờ Xám Nhạt",
+                image: "/img/PL33411.jpg",
+                category: "Nền Nhà Vệ Sinh 30x30",
+                isNew: true
+            },
+            {
+                id: 326,
+                name: "Gạch 30x30 Platinum PL33803 - Hoa Văn Cổ Điển",
+                image: "/img/PL33803.jpg",
+                category: "Nền Nhà Vệ Sinh 30x30",
+                isNew: true
+            },
+            {
+                id: 327,
+                name: "Gạch 30x30 Platinum PL33802 - Hoa Văn Bông Hoa",
+                image: "/img/PL33802.jpg",
+                category: "Nền Nhà Vệ Sinh 30x30",
+                isNew: true
+            },
+            {
+                id: 328,
+                name: "Gạch 30x30 Platinum PL33801 - Hoa Văn Ghép",
+                image: "/img/PL33801.jpg",
+                category: "Nền Nhà Vệ Sinh 30x30",
+                isNew: true
+            },
+            {
+                id: 329,
+                name: "Gạch 30x30 Platinum PL33410 - Matt Satin Trắng",
+                image: "/img/PL33410.jpg",
+                category: "Nền Nhà Vệ Sinh 30x30",
+                isNew: true
+            },
+
+            // ==========================================
+            // 4. NHÓM GẠCH SÂN VƯỜN
+            // ==========================================   
+            {
+                id: 421,
+                name: "Gạch Sân Vườn 40x60 ITACA 4603 - Viền Cổ Điển",
+                image: "/img/4603.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 422,
+                name: "Gạch Sân Vườn 40x60 ITACA 4606 - Giả Đá Muối Tiêu",
+                image: "/img/4606.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 423,
+                name: "Gạch Sân Vườn 40x60 ITACA 4602 - Xám Vân Đá",
+                image: "/img/4602.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 424,
+                name: "Gạch Sân Vườn 40x60 Platinum AK4601PL04 - Vân Đá Xám Xanh",
+                image: "/img/AK4601PL04.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 425,
+                name: "Gạch Sân Vườn 40x60 Platinum AK4601PL05 - Vân Đá Xám Nhạt",
+                image: "/img/AK4601PL05.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 426,
+                name: "Gạch Sân Vườn 40x60 Platinum AK4601PL01 - Vân Đá Xám Đậm",
+                image: "/img/AK4601PL01.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 427,
+                name: "Gạch Sân Vườn 40x60 Platinum AK4601PL06 - Vân Đá Nâu Rusty",
+                image: "/img/AK4601PL06.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 428,
+                name: "Gạch Sân Vườn 40x60 Platinum AK4601PL03 - Vân Đá Xám Trắng",
+                image: "/img/AK4601PL03.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 429,
+                name: "Gạch Sân Vườn 40x60 Platinum AK4601PL02 - Vân Đá Đen",
+                image: "/img/AK4601PL02.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 430,
+                name: "Gạch Sân Vườn 40x60 ITACA 4607 - Xám Slate",
+                image: "/img/4607.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+            {
+                id: 431,
+                name: "Gạch Sân Vườn 40x60 ITACA 4601 - Xám Ghi Viền",
+                image: "/img/4601.jpg",
+                category: "Gạch 40x60",
+                isNew: true
+            },
+
+            // ==========================================
+            // 5. THIẾT BỊ VỆ SINH & KHÁC
+            // ==========================================
+            { 
+                id: 501, 
+                name: "Bồn Cầu 1 Khối Nano Kháng Khuẩn", 
+                image: "/img/boncau_nano.jpg", 
+                category: "Thiết Bị Vệ Sinh", 
+                isNew: true 
+            },
+            { 
+                id: 502, 
+                name: "Lavabo Đặt Bàn Viền Vàng", 
+                image: "/img/lavabo.jpg", 
+                category: "Thiết Bị Vệ Sinh", 
+                isNew: true 
+            },
+            { 
+                id: 601, 
+                name: "Sơn Nước Nội Thất Cao Cấp", 
+                image: "/img/sonnuoc.jpg", 
+                category: "Sơn Nước", 
+                isNew: false 
+            },
+            { 
+                id: 610, 
+                name: "Sơn Chống Thấm Đa Năng", 
+                image: "/img/chongtham.jpg", 
+                category: "Chống Thấm", 
+                isNew: false 
+            },
+            { 
+                id: 620, 
+                name: "Keo Dán Gạch Chuyên Dụng", 
+                image: "/img/keodangach.jpg", 
+                category: "Keo Dán Gạch", 
+                isNew: false 
+            },
+        ];
+
+        // --- COMPONENTS ---
+
+        const TopBar = () => (
+            <div className="bg-light py-2 border-bottom">
+                <div className="container d-flex flex-column flex-sm-row justify-content-between align-items-center small text-secondary">
+                    <div className="d-flex align-items-center gap-2 mb-1 mb-sm-0">
+                         <i className="bi bi-telephone-fill text-primary"></i>
+                         <span>Hotline: <span className="fw-bold text-dark">{COMPANY_INFO.hotline}</span></span>
+                    </div>
+                    <div className="d-flex align-items-center gap-2">
+                         <i className="bi bi-envelope-fill text-primary"></i>
+                         <span>{COMPANY_INFO.email}</span>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const Navbar = ({ onNavigate, onCategoryClick, onSearch }) => {
+            const [isOpen, setIsOpen] = useState(false);
+            const [activeDropdown, setActiveDropdown] = useState(null);
+            const [activeSubDropdown, setActiveSubDropdown] = useState(null);
+            const [searchTerm, setSearchTerm] = useState('');
+
+            const toggleDropdown = (label) => {
+                setActiveDropdown(activeDropdown === label ? null : label);
+                setActiveSubDropdown(null);
+            };
+
+            const toggleSubDropdown = (label, e) => {
+                e.stopPropagation();
+                setActiveSubDropdown(activeSubDropdown === label ? null : label);
+            };
+
+            const handleNavItemClick = (e, item) => {
+                e.preventDefault();
+                if (item.label === 'Trang chủ') {
+                    onNavigate('home');
+                    setIsOpen(false);
+                } else if (!item.children) {
+                    onCategoryClick(item.label);
+                    setIsOpen(false);
+                }
+            };
+
+            const handleSearchSubmit = (e) => {
+                e.preventDefault();
+                onSearch(searchTerm);
+                setIsOpen(false);
+            };
+
+            return (
+                <nav className="navbar navbar-expand-lg navbar-light bg-white sticky-top py-3">
+                    <div className="container">
+                        <a className="navbar-brand d-flex align-items-center cursor-pointer" onClick={(e) => { e.preventDefault(); onNavigate('home'); }}>
+                            <span className="fs-3 fw-bold text-primary">
+                                Gạch Men <span className="text-secondary-custom">Tân Đại Huy</span>
+                            </span>
+                        </a>
+
+                        <button className="navbar-toggler border-0" type="button" onClick={() => setIsOpen(!isOpen)}>
+                            <i className={`bi ${isOpen ? 'bi-x-lg' : 'bi-list'} fs-1`}></i>
+                        </button>
+
+                        <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''} mt-3 mt-lg-0`}>
+                            {/* Desktop Menu */}
+                            <ul className="navbar-nav ms-auto mb-2 mb-lg-0 d-none d-lg-flex gap-3">
+                                {NAV_ITEMS.map((item) => (
+                                    <li key={item.label} className="nav-item dropdown">
+                                        <a 
+                                            className="nav-link d-flex align-items-center gap-1"
+                                            href={item.href}
+                                            onClick={(e) => {
+                                                if(!item.children) handleNavItemClick(e, item);
+                                                else e.preventDefault();
+                                            }}
+                                        >
+                                            {item.label}
+                                            {item.children && <i className="bi bi-chevron-down" style={{fontSize: '0.7em'}}></i>}
+                                        </a>
+                                        
+                                        {item.children && (
+                                            <ul className="dropdown-menu shadow-lg rounded-0 rounded-bottom">
+                                                {item.children.map(child => (
+                                                    <li key={child.label} className="dropdown-submenu">
+                                                        <a 
+                                                            className="dropdown-item d-flex justify-content-between align-items-center" 
+                                                            href={child.href}
+                                                            onClick={(e) => {
+                                                                e.preventDefault(); 
+                                                                // Fix: Allow clicking parent to filter
+                                                                onCategoryClick(child.label);
+                                                            }}
+                                                        >
+                                                            {child.label}
+                                                            {child.children && <i className="bi bi-chevron-right" style={{fontSize: '0.7em'}}></i>}
+                                                        </a>
+                                                        {child.children && (
+                                                            <ul className="dropdown-menu shadow-lg rounded-0 rounded-bottom">
+                                                                {child.children.map(grandChild => (
+                                                                    <li key={grandChild.label}>
+                                                                        <a className="dropdown-item" href="#" onClick={(e) => {e.preventDefault(); onCategoryClick(grandChild.label)}}>
+                                                                            {grandChild.label}
+                                                                        </a>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        )}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                            
+                            {/* Search Form Desktop */}
+                            <form className="d-none d-lg-flex ms-3" onSubmit={handleSearchSubmit}>
+                                <div className="input-group">
+                                    <input 
+                                        type="text" 
+                                        className="form-control" 
+                                        placeholder="Tìm sản phẩm..." 
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                    <button className="btn btn-primary" type="submit">
+                                        <i className="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </form>
+
+                            {/* Mobile Menu */}
+                            <div className="d-lg-none">
+                                <ul className="list-unstyled">
+                                    {NAV_ITEMS.map((item) => (
+                                        <li key={item.label} className="border-bottom">
+                                            <div className="d-flex justify-content-between align-items-center py-2">
+                                                <a className="nav-link w-100" href="#" onClick={(e) => handleNavItemClick(e, item)}>{item.label}</a>
+                                                {item.children && (
+                                                    <button className="btn btn-link text-dark p-0" onClick={() => toggleDropdown(item.label)}>
+                                                        <i className={`bi bi-chevron-down transition-transform ${activeDropdown === item.label ? 'rotate-180' : ''}`}></i>
+                                                    </button>
+                                                )}
+                                            </div>
+                                            {item.children && activeDropdown === item.label && (
+                                                <ul className="list-unstyled bg-light ps-3 py-2">
+                                                    {item.children.map(child => (
+                                                        <li key={child.label}>
+                                                            <div className="d-flex justify-content-between align-items-center py-2 pe-3">
+                                                                <a className="text-decoration-none text-secondary" href="#" onClick={(e) => {
+                                                                    e.preventDefault(); 
+                                                                    // Fix: Allow clicking parent to filter
+                                                                    onCategoryClick(child.label); 
+                                                                    setIsOpen(false); 
+                                                                }}>
+                                                                    {child.label}
+                                                                </a>
+                                                                {child.children && (
+                                                                    <button className="btn btn-link text-secondary p-0" onClick={(e) => toggleSubDropdown(child.label, e)}>
+                                                                        <i className={`bi bi-chevron-down ${activeSubDropdown === child.label ? 'rotate-180' : ''}`}></i>
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                            {child.children && activeSubDropdown === child.label && (
+                                                                <ul className="list-unstyled ps-3 border-start border-2 border-secondary ms-1">
+                                                                    {child.children.map(grandChild => (
+                                                                        <li key={grandChild.label} className="py-1">
+                                                                            <a className="text-decoration-none text-muted small" href="#" onClick={(e) => {e.preventDefault(); onCategoryClick(grandChild.label); setIsOpen(false);}}>
+                                                                                {grandChild.label}
+                                                                            </a>
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            )}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                                {/* Search Form Mobile */}
+                                <form className="mt-3" onSubmit={handleSearchSubmit}>
+                                    <div className="input-group">
+                                        <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            placeholder="Tìm sản phẩm..."
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                        />
+                                        <button className="btn btn-primary" type="submit">
+                                            <i className="bi bi-search"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            );
+        };
+
+        const Hero = () => {
+            const [currentIndex, setCurrentIndex] = useState(0);
+
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setCurrentIndex((prev) => (prev + 1) % BANNER_IMAGES.length);
+                }, 5000);
+                return () => clearInterval(interval);
+            }, []);
+
+            return (
+                <div className="position-relative w-100 bg-secondary overflow-hidden" style={{height: '400px'}}>
+                    {BANNER_IMAGES.map((img, index) => (
+                        <div 
+                            key={index}
+                            className="w-100 h-100 position-absolute top-0 start-0"
+                            style={{
+                                backgroundImage: `url(${img})`,
+                                backgroundSize: 'cover',
+                                backgroundPosition: 'center',
+                                opacity: index === currentIndex ? 1 : 0,
+                                transition: 'opacity 1s ease-in-out'
+                            }}
+                        >
+                             <div className="w-100 h-100 d-flex align-items-center justify-content-center bg-secondary bg-opacity-10">
+                                <span className="text-white fw-bold fs-3" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.5)'}}></span>
+                             </div>
+                        </div>
+                    ))}
+                    
+                    <button 
+                        className="btn btn-dark bg-opacity-50 rounded-circle position-absolute top-50 start-0 translate-middle-y ms-3 d-none d-md-block"
+                        onClick={() => setCurrentIndex(currentIndex === 0 ? BANNER_IMAGES.length - 1 : currentIndex - 1)}
+                    >
+                        <i className="bi bi-chevron-left text-white fs-4"></i>
+                    </button>
+                    
+                    <button 
+                        className="btn btn-dark bg-opacity-50 rounded-circle position-absolute top-50 end-0 translate-middle-y me-3 d-none d-md-block"
+                        onClick={() => setCurrentIndex((currentIndex + 1) % BANNER_IMAGES.length)}
+                    >
+                        <i className="bi bi-chevron-right text-white fs-4"></i>
+                    </button>
+                </div>
+            );
+        };
+
+        const CategoryList = ({ onCategoryClick }) => (
+            <div className="container py-5">
+                <h2 className="text-center fw-bold text-uppercase mb-5 text-dark">Danh Mục Phổ Biến</h2>
+                <div className="row g-4">
+                    {CATEGORIES.map(cat => (
+                        <div className="col-6 col-md-3" key={cat.id}>
+                            <div 
+                                className="card h-100 border bg-white rounded-3 p-4 align-items-center text-center cursor-pointer hover-shadow"
+                                onClick={() => onCategoryClick(cat.name)}
+                            >
+                                <i className={`bi ${cat.icon} display-4 mb-3 ${cat.colorClass}`}></i>
+                                <h5 className="card-title fw-bold text-dark">{cat.name}</h5>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+
+        const ProductCard = ({ product }) => {
+            const handleImageError = (e) => {
+                e.target.src = "https://placehold.co/600x600/f3f4f6/9ca3af?text=Đang+cập+nhật";
+            };
+
+            return (
+                <div className="card h-100 border-0 shadow-sm product-card hover-shadow overflow-hidden">
+                    <div className="product-img-container position-relative">
+                        <img 
+                            src={product.image} 
+                            className="product-img" 
+                            alt={product.name} 
+                            onError={handleImageError}
+                        />
+                        {product.isNew && (
+                            <span className="position-absolute top-0 start-0 m-2 badge bg-danger rounded-0 px-2 py-1">Mới</span>
+                        )}
+                    </div>
+                    <div className="card-body d-flex flex-column p-3">
+                        <div className="text-muted small text-uppercase fw-bold mb-1">{product.category}</div>
+                        <h6 className="card-title fw-bold text-dark mb-3" style={{minHeight: '2.5em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden'}}>
+                            {product.name}
+                        </h6>
+                        <div className="mt-auto pt-2">
+                            <a href={COMPANY_INFO.zaloLink} target="_blank" className="btn bg-zalo text-white w-100 rounded-pill d-flex align-items-center justify-content-center gap-2 fw-bold hover-shadow">
+                                <i className="bi bi-chat-fill"></i> Liên hệ Zalo
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const ProductList = ({ onViewAll }) => {
+            // Use useMemo to shuffle products once on component mount
+            const randomProducts = useMemo(() => {
+                const shuffled = [...PRODUCTS];
+                // Fisher-Yates Shuffle
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled.slice(0, 8);
+            }, []);
+
+            return (
+                <div className="container py-4 mb-5">
+                    <div className="d-flex align-items-center mb-4 position-relative">
+                        <h3 className="fw-bold text-uppercase m-0 pe-4 bg-white z-1 position-relative" style={{zIndex: 1}}>Sản Phẩm Mới Nhất</h3>
+                        <div className="flex-grow-1 border-bottom position-absolute w-100 top-50"></div>
+                    </div>
+                    
+                    <div className="row g-3 g-md-4">
+                        {randomProducts.map(product => (
+                            <div className="col-6 col-md-4 col-lg-3" key={product.id}>
+                                <ProductCard product={product} />
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="text-center mt-5">
+                        <button onClick={onViewAll} className="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold border-2">
+                            Xem tất cả sản phẩm
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        const AllProductsPage = ({ initialCategory, searchTerm }) => {
+            const [selectedCategory, setSelectedCategory] = useState(initialCategory || 'Tất cả sản phẩm');
+            const [displayProducts, setDisplayProducts] = useState([]);
+            const [expandedCategories, setExpandedCategories] = useState({});
+            const [currentPage, setCurrentPage] = useState(1);
+            
+            // Số lượng sản phẩm trên mỗi trang là 9
+            const itemsPerPage = 9;
+
+            // Helper to get all child categories recursively
+            const getAllChildCategories = (navItems, parentLabel) => {
+                let categories = [];
+                const findAndCollect = (items) => {
+                    for (const item of items) {
+                        if (item.label === parentLabel) {
+                            if (item.children) {
+                                collectAll(item.children);
+                            }
+                            return true; 
+                        } else if (item.children) {
+                            const found = findAndCollect(item.children);
+                            if (found) return true;
+                        }
+                    }
+                    return false;
+                };
+                const collectAll = (items) => {
+                    items.forEach(c => {
+                        categories.push(c.label);
+                        if (c.children) collectAll(c.children);
+                    });
+                };
+                findAndCollect(navItems);
+                return categories;
+            };
+
+            // Helper to get path to category for auto-expanding
+            const getPathToCategory = (items, target, path = []) => {
+                for (const item of items) {
+                    if (item.label === target) return [...path, item.label];
+                    if (item.children) {
+                        const found = getPathToCategory(item.children, target, [...path, item.label]);
+                        if (found) return found;
+                    }
+                }
+                return null;
+            };
+
+            useEffect(() => {
+                if(initialCategory) {
+                    setSelectedCategory(initialCategory);
+                    // Mở rộng menu khi chọn từ navbar
+                    const path = getPathToCategory(NAV_ITEMS, initialCategory);
+                    if (path) {
+                        const newExpanded = {};
+                        path.forEach(p => newExpanded[p] = true);
+                        setExpandedCategories(newExpanded);
+                    }
+                } else {
+                    setExpandedCategories({});
+                }
+                setCurrentPage(1);
+            }, [initialCategory]);
+
+            useEffect(() => {
+                let filtered = [];
+                
+                // Lọc theo danh mục (bao gồm cả danh mục con)
+                if (selectedCategory !== 'Tất cả sản phẩm') {
+                    const childCategories = getAllChildCategories(NAV_ITEMS, selectedCategory);
+                    // Include the selected category itself
+                    const categoriesToMatch = [selectedCategory, ...childCategories];
+                    
+                    // FIXED: Strict filtering to prevents partial matching (e.g. "Gạch 80x80" vs "Gạch 80x80 VN")
+                    filtered = PRODUCTS.filter(p => categoriesToMatch.includes(p.category));
+                } else {
+                    filtered = [...PRODUCTS];
+                }
+
+                // Lọc theo từ khóa tìm kiếm (nếu có)
+                if (searchTerm && searchTerm.trim() !== '') {
+                    const lowerTerm = searchTerm.toLowerCase();
+                    filtered = filtered.filter(p => 
+                        p.name.toLowerCase().includes(lowerTerm) || 
+                        p.category.toLowerCase().includes(lowerTerm)
+                    );
+                }
+
+                // Shuffle the filtered results (Fisher-Yates Shuffle)
+                // We shuffle filtering to satisfy the requirement of random display on category click
+                for (let i = filtered.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [filtered[i], filtered[j]] = [filtered[j], filtered[i]];
+                }
+
+                setDisplayProducts(filtered);
+                setCurrentPage(1);
+            }, [selectedCategory, searchTerm]);
+
+            const toggleExpand = (label, e) => {
+                e.stopPropagation();
+                setExpandedCategories(prev => ({...prev, [label]: !prev[label]}));
+            }
+
+            const totalPages = Math.ceil(displayProducts.length / itemsPerPage);
+            const currentProducts = displayProducts.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+            const handlePageChange = (page) => {
+                if (page >= 1 && page <= totalPages) {
+                    setCurrentPage(page);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            };
+
+            // Hàm render phân trang thông minh
+            const renderPagination = () => {
+                const pageNumbers = [];
+                if (totalPages <= 7) {
+                    for(let i=1; i<=totalPages; i++) pageNumbers.push(i);
+                } else {
+                    pageNumbers.push(1);
+                    if (currentPage > 3) pageNumbers.push('...');
+                    
+                    let start = Math.max(2, currentPage - 1);
+                    let end = Math.min(totalPages - 1, currentPage + 1);
+                    
+                    if (currentPage <= 3) { start = 2; end = 4; }
+                    else if (currentPage >= totalPages - 2) { start = totalPages - 3; end = totalPages - 1; }
+                    
+                    for(let i=start; i<=end; i++) pageNumbers.push(i);
+                    
+                    if (currentPage < totalPages - 2) pageNumbers.push('...');
+                    pageNumbers.push(totalPages);
+                }
+
+                return (
+                    <nav className="mt-5 d-flex justify-content-center">
+                        <ul className="pagination">
+                            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>
+                                    <i className="bi bi-chevron-left"></i>
+                                </button>
+                            </li>
+                            
+                            {pageNumbers.map((page, index) => (
+                                <li key={index} className={`page-item ${page === currentPage ? 'active' : ''} ${page === '...' ? 'disabled' : ''}`}>
+                                    {page === '...' ? (
+                                        <span className="page-dots">...</span>
+                                    ) : (
+                                        <button className="page-link" onClick={() => handlePageChange(page)}>{page}</button>
+                                    )}
+                                </li>
+                            ))}
+
+                            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+                                <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>
+                                    <i className="bi bi-chevron-right"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                );
+            };
+
+            return (
+                <div className="container py-4">
+                    <nav aria-label="breadcrumb" className="mb-4">
+                        <ol className="breadcrumb">
+                            <li className="breadcrumb-item"><a href="#" onClick={() => setSelectedCategory('Tất cả sản phẩm')}>Sản phẩm</a></li>
+                            {searchTerm ? (
+                                <li className="breadcrumb-item active">Tìm kiếm: "{searchTerm}"</li>
+                            ) : (
+                                <li className="breadcrumb-item active">{selectedCategory}</li>
+                            )}
+                        </ol>
+                    </nav>
+
+                    <div className="row">
+                        {/* Sidebar */}
+                        <div className="col-lg-3 mb-4">
+                            <div className="card border-0 shadow-sm">
+                                <div className="card-body">
+                                    <h5 className="fw-bold text-uppercase mb-3"><i className="bi bi-funnel text-primary me-2"></i>Danh mục</h5>
+                                    <div 
+                                        className={`category-item cursor-pointer mb-1 ${selectedCategory === 'Tất cả sản phẩm' ? 'active' : ''}`}
+                                        onClick={() => setSelectedCategory('Tất cả sản phẩm')}
+                                    >
+                                        Tất cả sản phẩm
+                                    </div>
+                                    {NAV_ITEMS.filter(i => i.children).map(cat => (
+                                        <div key={cat.label}>
+                                            <div 
+                                                className={`category-item d-flex justify-content-between cursor-pointer ${selectedCategory === cat.label ? 'active' : ''}`}
+                                                onClick={() => {setSelectedCategory(cat.label); setExpandedCategories(p => ({...p, [cat.label]: true}))}}
+                                            >
+                                                <span>{cat.label}</span>
+                                                {cat.children && <i className="bi bi-chevron-right small" onClick={(e) => toggleExpand(cat.label, e)}></i>}
+                                            </div>
+                                            {cat.children && expandedCategories[cat.label] && (
+                                                <div className="ms-3 ps-2 border-start">
+                                                    {cat.children.map(sub => (
+                                                        <div key={sub.label}>
+                                                            <div 
+                                                                className={`category-item d-flex justify-content-between cursor-pointer small ${selectedCategory === sub.label ? 'active' : ''}`}
+                                                                onClick={() => {setSelectedCategory(sub.label); if(sub.children) setExpandedCategories(p => ({...p, [sub.label]: true})) }}
+                                                            >
+                                                                <span>{sub.label}</span>
+                                                                {sub.children && <i className="bi bi-chevron-right small" onClick={(e) => toggleExpand(sub.label, e)}></i>}
+                                                            </div>
+                                                            {/* Render Level 3 (Grandchildren) */}
+                                                            {sub.children && expandedCategories[sub.label] && (
+                                                                <div className="ms-3 ps-2 border-start">
+                                                                    {sub.children.map(grandChild => (
+                                                                        <div 
+                                                                            key={grandChild.label}
+                                                                            className={`category-item cursor-pointer small text-muted ${selectedCategory === grandChild.label ? 'active' : ''}`}
+                                                                            onClick={() => setSelectedCategory(grandChild.label)}
+                                                                        >
+                                                                            {grandChild.label}
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Product Grid */}
+                        <div className="col-lg-9">
+                            <div className="d-flex justify-content-between align-items-center mb-3">
+                                <h4 className="fw-bold m-0">{searchTerm ? `Kết quả tìm kiếm: ${searchTerm}` : selectedCategory}</h4>
+                                <span className="text-muted small">Hiển thị {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, displayProducts.length)} trên tổng {displayProducts.length} kết quả</span>
+                            </div>
+
+                            {currentProducts.length > 0 ? (
+                                <div className="row g-3">
+                                    {currentProducts.map(p => (
+                                        <div className="col-6 col-md-4" key={p.id}>
+                                            <ProductCard product={p} />
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="alert alert-warning text-center">
+                                    {searchTerm 
+                                        ? `Không tìm thấy sản phẩm nào phù hợp với từ khóa "${searchTerm}".` 
+                                        : "Chưa có sản phẩm trong danh mục này."}
+                                </div>
+                            )}
+
+                             {/* Pagination */}
+                            {totalPages > 1 && renderPagination()}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const AboutPage = () => (
+            <div className="container py-5 bg-white shadow-sm rounded my-4">
+                {/* Header */}
+                <div className="text-center mb-5">
+                    <h1 className="fw-bold text-primary text-uppercase display-5">Giới Thiệu Về Tân Đại Huy</h1>
+                    <p className="lead fw-bold text-secondary">Đối Tác Đáng Tin Cậy Trong Lĩnh Vực Gạch Ốp Lát & Thiết Bị Nhà Tắm – Nhà Bếp</p>
+                </div>
+
+                {/* Intro */}
+                <div className="mb-5 text-muted">
+                    <p>
+                        <span className="fw-bold text-primary">Tân Đại Huy</span> là đơn vị chuyên cung cấp gạch lát nền, gạch ốp tường, thiết bị vệ sinh và phụ kiện nhà bếp. 
+                        Với nhiều năm kinh nghiệm trong ngành vật liệu xây dựng, chúng tôi đã và đang khẳng định vị thế của mình thông qua chất lượng sản phẩm, dịch vụ tận tâm và sự hài lòng của khách hàng.
+                    </p>
+                </div>
+
+                {/* Vision & Mission */}
+                <div className="row g-4 mb-5">
+                    <div className="col-md-6">
+                        <div className="p-4 border rounded h-100 bg-light">
+                            <div className="d-flex align-items-center gap-2 mb-3">
+                                <i className="bi bi-eye fs-2 text-primary"></i>
+                                <h3 className="fw-bold text-primary m-0">Tầm Nhìn</h3>
+                            </div>
+                            <p>Tân Đại Huy hướng đến trở thành một trong những nhà cung cấp uy tín hàng đầu tại Việt Nam trong lĩnh vực gạch ốp lát – thiết bị vệ sinh – phụ kiện nhà bếp, mang đến giải pháp toàn diện cho các công trình hiện đại.</p>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <div className="p-4 border rounded h-100 bg-light">
+                            <div className="d-flex align-items-center gap-2 mb-3">
+                                <i className="bi bi-gem fs-2 text-secondary-custom"></i>
+                                <h3 className="fw-bold text-secondary-custom m-0">Sứ Mệnh</h3>
+                            </div>
+                            <p className="mb-2">Chúng tôi đặt chất lượng và sự hài lòng của khách hàng làm trọng tâm.</p>
+                            <p>Tân Đại Huy cam kết cung cấp sản phẩm đạt chuẩn, mẫu mã đẹp, độ bền cao nhằm hoàn thiện không gian sống và làm việc một cách tiện nghi, thẩm mỹ và bền vững.</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Core Values */}
+                <div className="mb-5">
+                    <h3 className="fw-bold mb-4 border-start border-4 border-primary ps-3">Giá Trị Cốt Lõi</h3>
+                    <div className="row g-4">
+                        <div className="col-md-6">
+                            <div className="d-flex gap-3">
+                                <i className="bi bi-check-circle-fill text-success fs-4"></i>
+                                <div>
+                                    <h5 className="fw-bold">Chất lượng đảm bảo</h5>
+                                    <p className="text-muted">Tất cả sản phẩm tại Tân Đại Huy đều được tuyển chọn từ các thương hiệu uy tín, trải qua quy trình kiểm tra khắt khe trước khi phân phối đến khách hàng.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="d-flex gap-3">
+                                <i className="bi bi-heart-fill text-danger fs-4"></i>
+                                <div>
+                                    <h5 className="fw-bold">Dịch vụ tận tâm</h5>
+                                    <p className="text-muted">Đội ngũ tư vấn viên giàu kinh nghiệm luôn hỗ trợ khách hàng lựa chọn sản phẩm phù hợp, giải đáp mọi thắc mắc một cách nhanh chóng và nhiệt tình.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="d-flex gap-3">
+                                <i className="bi bi-tag-fill text-warning fs-4"></i>
+                                <div>
+                                    <h5 className="fw-bold">Giá cả cạnh tranh</h5>
+                                    <p className="text-muted">Chúng tôi cam kết cung cấp sản phẩm giá tốt – không qua trung gian, đảm bảo tối ưu chi phí cho khách hàng.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="d-flex gap-3">
+                                <i className="bi bi-shield-check text-primary fs-4"></i>
+                                <div>
+                                    <h5 className="fw-bold">Minh bạch và uy tín</h5>
+                                    <p className="text-muted">Giá cả, thông tin sản phẩm đều được công khai rõ ràng, không phát sinh chi phí ẩn, giúp khách hàng yên tâm khi lựa chọn Tân Đại Huy.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {/* Products */}
+                <div className="mb-5 bg-light p-4 rounded">
+                     <h3 className="text-center fw-bold text-uppercase mb-4">Danh Mục Sản Phẩm Chính</h3>
+                     <div className="row text-center g-4">
+                        <div className="col-md-4">
+                            <div className="mb-2"><i className="bi bi-layers fs-1 text-primary"></i></div>
+                            <h5 className="fw-bold">Gạch lát nền – Gạch ốp tường</h5>
+                            <p className="small text-muted">Đa dạng kích thước và mẫu mã, phù hợp cho mọi không gian như phòng khách, phòng bếp, phòng tắm, nhà ở, showroom…</p>
+                        </div>
+                         <div className="col-md-4">
+                            <div className="mb-2"><i className="bi bi-droplet fs-1 text-primary"></i></div>
+                            <h5 className="fw-bold">Thiết bị vệ sinh</h5>
+                            <p className="small text-muted">Bồn cầu, lavabo, vòi nước, sen tắm, phụ kiện phòng tắm… Sản phẩm chất lượng cao, thiết kế hiện đại, đáp ứng mọi tiêu chuẩn sử dụng.</p>
+                        </div>
+                         <div className="col-md-4">
+                            <div className="mb-2"><i className="bi bi-basket fs-1 text-primary"></i></div>
+                            <h5 className="fw-bold">Phụ kiện nhà bếp</h5>
+                            <p className="small text-muted">Chậu rửa, vòi rửa, phụ kiện inox, linh kiện lắp đặt…</p>
+                        </div>
+                     </div>
+                </div>
+
+                {/* Support Policy */}
+                 <div className="mb-5">
+                    <h3 className="fw-bold mb-4 border-start border-4 border-secondary ps-3">Chính Sách Hỗ Trợ Khách Hàng</h3>
+                    <div className="row g-4">
+                        <div className="col-md-4">
+                             <div className="border p-3 rounded h-100">
+                                <h5 className="fw-bold text-primary"><i className="bi bi-lightning-charge me-2"></i>Báo giá nhanh chóng</h5>
+                                <p className="text-muted small mb-0">Cung cấp báo giá chi tiết theo từng mẫu sản phẩm mà khách hàng quan tâm.</p>
+                             </div>
+                        </div>
+                        <div className="col-md-4">
+                             <div className="border p-3 rounded h-100">
+                                <h5 className="fw-bold text-primary"><i className="bi bi-truck me-2"></i>Hỗ trợ vận chuyển</h5>
+                                <p className="text-muted small mb-0">Giao hàng nhanh chóng, đảm bảo sản phẩm nguyên vẹn khi đến tay khách hàng.</p>
+                             </div>
+                        </div>
+                         <div className="col-md-4">
+                             <div className="border p-3 rounded h-100">
+                                <h5 className="fw-bold text-primary"><i className="bi bi-chat-dots me-2"></i>Tư vấn từ A–Z</h5>
+                                <p className="text-muted small mb-0">Đồng hành cùng khách hàng từ khâu chọn mẫu cho đến hoàn thiện công trình.</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Commit & Connect */}
+                <div className="bg-primary text-white text-center p-5 rounded-4">
+                    <h3 className="fw-bold mb-3">Cam Kết Của Tân Đại Huy</h3>
+                    <p className="mb-4">Tân Đại Huy không ngừng nỗ lực nâng cao chất lượng sản phẩm và dịch vụ, đảm bảo mỗi sản phẩm trao đến khách hàng đều là giải pháp tốt nhất cho ngôi nhà và công trình của bạn.</p>
+                    <hr className="opacity-50 my-4" />
+                    <h3 className="fw-bold mb-3">Kết Nối Với Tân Đại Huy</h3>
+                    <p className="mb-3">Hãy đến với Tân Đại Huy để khám phá các dòng gạch ốp lát – thiết bị vệ sinh – phụ kiện nhà bếp chất lượng, giúp nâng tầm không gian sống của bạn.</p>
+                    <h4 className="fw-bold text-warning text-uppercase">Tân Đại Huy – Chất lượng vững bền, dịch vụ tận tâm!</h4>
+                </div>
+            </div>
+        );
+
+        const Footer = ({ onNavigate }) => (
+            <footer className="bg-dark text-light pt-5 pb-3 mt-auto">
+                <div className="container">
+                    <div className="row g-4 mb-4">
+                        <div className="col-md-4">
+                            <h5 className="text-secondary-custom fw-bold text-uppercase mb-4">{COMPANY_INFO.name}</h5>
+                            <p className="text-secondary small mb-4">Chuyên cung cấp gạch men, granite, thiết bị vệ sinh chính hãng.</p>
+                            <div className="d-flex gap-2 mb-2"><i className="bi bi-geo-alt text-primary"></i> <span className="small">{COMPANY_INFO.address}</span></div>
+                            <div className="d-flex gap-2"><i className="bi bi-telephone text-primary"></i> <span className="small fw-bold">{COMPANY_INFO.hotline}</span></div>
+                        </div>
+                        <div className="col-md-4">
+                            <h5 className="text-light fw-bold mb-4">Liên kết</h5>
+                            <ul className="list-unstyled">
+                                <li className="mb-2"><a href="#" className="text-secondary text-decoration-none small" onClick={(e) => {e.preventDefault(); onNavigate('home')}}>Trang chủ</a></li>
+                                <li className="mb-2"><a href="#" className="text-secondary text-decoration-none small" onClick={(e) => {e.preventDefault(); onNavigate('about')}}>Giới thiệu</a></li>
+                            </ul>
+                        </div>
+                        <div className="col-md-4">
+                            <h5 className="text-light fw-bold mb-4">Kết nối</h5>
+                            <a href={COMPANY_INFO.zaloLink} target="_blank" className="btn btn-primary btn-sm rounded-pill px-4">Chat Zalo</a>
+                        </div>
+                    </div>
+                    <div className="border-top border-secondary pt-3 text-center small text-secondary">
+                        &copy; {new Date().getFullYear()} {COMPANY_INFO.name}.
+                    </div>
+                </div>
+            </footer>
+        );
+
+        const App = () => {
+            const [view, setView] = useState('home');
+            const [targetCategory, setTargetCategory] = useState(null);
+            const [searchTerm, setSearchTerm] = useState('');
+
+            const handleNavigate = (page) => {
+                if(page === 'home') {
+                    setView('home');
+                    setTargetCategory(null);
+                    setSearchTerm(''); // Xóa tìm kiếm khi về trang chủ
+                } else if (page === 'products') {
+                    setTargetCategory('Tất cả sản phẩm');
+                    setView('products');
+                } else if (page === 'about') {
+                    setView('about');
+                }
+                window.scrollTo(0,0);
+            };
+
+            const handleCategoryClick = (cat) => {
+                setTargetCategory(cat);
+                setSearchTerm(''); // Xóa tìm kiếm khi chọn danh mục
+                setView('products');
+                window.scrollTo(0,0);
+            };
+
+            const handleSearch = (term) => {
+                setSearchTerm(term);
+                setTargetCategory('Tất cả sản phẩm'); // Reset danh mục để tìm toàn bộ
+                setView('products');
+                window.scrollTo(0,0);
+            };
+
+            return (
+                <div className="d-flex flex-column min-vh-100">
+                    <TopBar />
+                    <Navbar onNavigate={handleNavigate} onCategoryClick={handleCategoryClick} onSearch={handleSearch} />
+                    
+                    <main className="flex-grow-1">
+                        {view === 'home' && (
+                            <React.Fragment>
+                                <Hero />
+                                <CategoryList onCategoryClick={handleCategoryClick} />
+                                <ProductList onViewAll={() => handleNavigate('products')} />
+                            </React.Fragment>
+                        )}
+                        {view === 'products' && (
+                            <AllProductsPage initialCategory={targetCategory} searchTerm={searchTerm} />
+                        )}
+                        {view === 'about' && (
+                            <AboutPage />
+                        )}
+                    </main>
+
+                    <Footer onNavigate={handleNavigate} />
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
