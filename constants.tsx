@@ -103,21 +103,21 @@ export const PRODUCTS: Product[] = [
   { 
     id: 101, 
     name: "Gạch Ấn Độ 80x80 Men Mờ (Hot)", 
-    image: "/img/ando_80x80_mo.jpg", 
+    image: "img/ando_80x80_mo.jpg", 
     category: "Gạch 80x80", 
     isNew: true 
   },
   { 
     id: 102, 
     name: "Gạch Bóng Kiếng 80x80 Trắng Vân Mây", 
-    image: "/img/80x80_trangvanmay.jpg", 
+    image: "img/80x80_trangvanmay.jpg", 
     category: "Gạch 80x80", 
     isNew: false 
   },
   { 
     id: 131, 
     name: "Gạch 80x80 GAM88003 - Bề Mặt Matt (Xám Xi Măng)", 
-    image: "/img/GAM88003.jpg", 
+    image: "img/GAM88003.jpg", 
     category: "Gạch 80x80", 
     isNew: true 
   },
